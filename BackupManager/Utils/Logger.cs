@@ -72,6 +72,10 @@ namespace Rexpavo.BackupManager.Utils
 
             if (!File.Exists(fullFileName))
                 File.Create(fullFileName).Dispose();
+
+            File.AppendAllText(fullFileName, _builder.ToString());
+
+            _builder.Clear();
         }
 
         #endregion

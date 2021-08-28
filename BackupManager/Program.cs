@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using Rexpavo.BackupManager.Classes;
+using Rexpavo.BackupManager.Classes.VCS;
+using Rexpavo.BackupManager.Utils;
 
 namespace Rexpavo.BackupManager
 {
@@ -7,12 +10,44 @@ namespace Rexpavo.BackupManager
     {
         static void Main(string[] args)
         {
-            ArgumentHelper argumentHelper = new ArgumentHelper(args);
+            #region --Pre setup--
 
-            bool argumementsAreValid = argumentHelper.ValidateArguments();
+            ArgumentHelper argHelper = new ArgumentHelper(args);
+            Logger.Init();
 
-            if (!argumementsAreValid)
-                throw new Exception("Arguments not validated!");
+            #endregion
+
+            #region --Argument validation
+
+            bool argumentsAreValid = argHelper.ValidateArguments();
+
+            if (!argumentsAreValid)
+            {
+                Logger.Collect(Logger.eMessageType.ERROR, "Arguments are not valid!");
+                Logger.Save();
+                Environment.Exit(-1);
+            }
+
+            #endregion
+
+            #region --Github Auth--
+
+            GitHub githubHelper = new GitHub();
+
+            bool userAuthenticated = githubHelper.Authenticate(argHelper.GetArgumentValue("token")).Result;
+
+            if (!userAuthenticated)
+            {
+                Logger.Collect(Logger.eMessageType.ERROR, "User could not be authenticated!");
+                Logger.Save();
+            }
+
+            #endregion
+
+            /*Actual work*/
+            
+            
+            
         }
     }
 }

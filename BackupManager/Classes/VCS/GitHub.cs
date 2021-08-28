@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Octokit;
+using Rexpavo.BackupManager.Utils;
 
 namespace Rexpavo.BackupManager.Classes.VCS
 {
@@ -25,6 +26,7 @@ namespace Rexpavo.BackupManager.Classes.VCS
             }
             catch (Exception e)
             {
+                
                 return false;
             }
         }
