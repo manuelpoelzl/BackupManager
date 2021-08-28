@@ -1,4 +1,5 @@
 ﻿using System;
+using Rexpavo.BackupManager.Classes;
 
 namespace Rexpavo.BackupManager
 {
@@ -6,7 +7,12 @@ namespace Rexpavo.BackupManager
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ArgumentHelper argumentHelper = new ArgumentHelper(args);
+
+            bool argumementsAreValid = argumentHelper.ValidateArguments();
+
+            if (!argumementsAreValid)
+                throw new Exception("Arguments not validated!");
         }
     }
 }
