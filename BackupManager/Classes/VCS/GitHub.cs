@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,11 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write("Begin authentication process", GeneralHelper.eWriteTypes.Info, true);
+
                 Credentials creds = new Credentials(token);
+
+                GeneralHelper.Write("Authenticting...", GeneralHelper.eWriteTypes.Info, true);
 
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("rexpavo-backup-manager"));
                 client.Credentials = creds;
@@ -39,11 +44,21 @@ namespace Rexpavo.BackupManager.Classes.VCS
 
                 _onBehalfOfUser = currentUser;
                 _client = client;
+
+
+                GeneralHelper.Write($"Authentication succeeded! It's you {_onBehalfOfUser.Name}! :D",
+                    GeneralHelper.eWriteTypes.Info, true);
                 return true;
             }
             catch (Exception e)
             {
+                Logger.Collect(e);
+
                 return false;
+            }
+            finally
+            {
+                Logger.Save();
             }
         }
 
@@ -51,10 +66,16 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Begin to try to act as {name} organization", GeneralHelper.eWriteTypes.Info,
+                    true);
+
                 Organization org = await _client.Organization.Get(name);
 
                 _onBehalfOfOrganization = org;
                 ActsAsOrganization = true;
+
+                GeneralHelper.Write($"Now acting as {name} organization on the VCS", GeneralHelper.eWriteTypes.Info,
+                    true);
 
                 return true;
             }
@@ -73,11 +94,18 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Stopping to act as {_onBehalfOfOrganization.Login} organization",
+                    GeneralHelper.eWriteTypes.Info, true);
+                ;
+
                 if (ActsAsOrganization)
                 {
                     _onBehalfOfOrganization = null;
                     ActsAsOrganization = false;
                 }
+
+                GeneralHelper.Write($"Now performing as user {_onBehalfOfUser.Name} on the VCS",
+                    GeneralHelper.eWriteTypes.Info, true);
             }
             catch (Exception e)
             {
@@ -119,6 +147,8 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Getting repositroy with id {id}", GeneralHelper.eWriteTypes.Info, true);
+
                 Repository requestedRepository = await _client.Repository.Get(id);
 
                 if (requestedRepository == null)
@@ -142,7 +172,11 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Trying to get the {name} repository", GeneralHelper.eWriteTypes.Info, true);
+
                 Repository requestedRepository = null;
+
+                GeneralHelper.Write("Checking if acting as organization...", GeneralHelper.eWriteTypes.Info, true);
 
                 if (ActsAsOrganization)
                     requestedRepository = await _client.Repository.Get(_onBehalfOfOrganization.Login, name);
@@ -171,7 +205,12 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Getting branch {branchName} from {repoName}", GeneralHelper.eWriteTypes.Info,
+                    true);
+
                 Branch requestedBranch = null;
+
+                GeneralHelper.Write("Checking if acting as organization", GeneralHelper.eWriteTypes.Info, true);
 
                 if (ActsAsOrganization)
                     requestedBranch =
@@ -201,6 +240,8 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Getting all branches in {repoName}...", GeneralHelper.eWriteTypes.Info, true);
+
                 IReadOnlyList<Branch> branches = null;
                 if (ActsAsOrganization)
                     branches = await _client.Repository.Branch.GetAll(_onBehalfOfOrganization.Login, repoName);
@@ -230,6 +271,9 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write($"Getting all organizations for {_onBehalfOfUser.Name}",
+                    GeneralHelper.eWriteTypes.Info, true);
+
                 IReadOnlyList<Organization> orgs = await _client.Organization.GetAllForCurrent();
 
                 if (orgs == null)
@@ -278,8 +322,13 @@ namespace Rexpavo.BackupManager.Classes.VCS
         {
             try
             {
+                GeneralHelper.Write(
+                    $"Bergin to download latest version of branch {branchName} of project {projectName}",
+                    GeneralHelper.eWriteTypes.Info, true);
+
                 string downloadUri = string.Empty;
 
+                GeneralHelper.Write("Checking if acting as organization...", GeneralHelper.eWriteTypes.Info, true);
                 if (ActsAsOrganization)
                     downloadUri = $"https://github.com/{_onBehalfOfOrganization.Login}/{projectName}/archive/{sha}.zip";
                 else
@@ -290,9 +339,15 @@ namespace Rexpavo.BackupManager.Classes.VCS
 
                 using (WebClient wc = new WebClient())
                 {
+                    GeneralHelper.Write("Preparing webclient...", GeneralHelper.eWriteTypes.Info, true);
                     wc.Headers.Add($"Authorization: token {token}");
+
+                    GeneralHelper.Write("Starting download...", GeneralHelper.eWriteTypes.Info, true);
                     wc.DownloadFile(downloadUri, fileLocation);
                 }
+
+
+                GeneralHelper.Write("Download successful!", GeneralHelper.eWriteTypes.Info, true);
 
                 return true;
             }

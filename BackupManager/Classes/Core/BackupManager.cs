@@ -72,10 +72,18 @@ namespace Rexpavo.BackupManager.Classes.Core
 
         private bool ValidateTokenExistence()
         {
+            GeneralHelper.Write("Validating PAT...", GeneralHelper.eWriteTypes.Info, true);
+
             if (string.IsNullOrWhiteSpace(_config.Environment.Token))
+            {
+                GeneralHelper.Write("Token not provided!", GeneralHelper.eWriteTypes.Error, true);
                 return false;
+            }
             else
+            {
+                GeneralHelper.Write("Token provided!", GeneralHelper.eWriteTypes.Info, true);
                 return true;
+            }
         }
 
         private bool ValidateUser()
@@ -102,6 +110,10 @@ namespace Rexpavo.BackupManager.Classes.Core
         {
             try
             {
+                GeneralHelper.Write("Starting backup...", GeneralHelper.eWriteTypes.Info, true);
+
+                GeneralHelper.Write("Setting summary counters...", GeneralHelper.eWriteTypes.Info, true);
+
                 int failedBackups = 0;
                 int backedUp = 0;
                 int totalNrToBackup = 0;
@@ -125,6 +137,9 @@ namespace Rexpavo.BackupManager.Classes.Core
 
                 foreach (Project project in _config.Projects)
                 {
+                    GeneralHelper.Write($"Started backup for project {project.Name}", GeneralHelper.eWriteTypes.Info,
+                        true);
+
                     string savePath = Path.Combine(_config.Environment.SavePath,
                         DateTime.Now.ToString("dd.MM.yyyy"), project.Name);
 
@@ -135,6 +150,8 @@ namespace Rexpavo.BackupManager.Classes.Core
 
                     foreach (Branch branch in project.Branches)
                     {
+                        GeneralHelper.Write($"Performing backup for branch {branch.Name}",
+                            GeneralHelper.eWriteTypes.Info, true);
                         try
                         {
                             totalNrToBackup++;
@@ -161,6 +178,9 @@ namespace Rexpavo.BackupManager.Classes.Core
                         githubHelper.StopOrganizationActing();
                 }
 
+
+                GeneralHelper.Write("Backup process finished - returning summary", GeneralHelper.eWriteTypes.Info,
+                    true);
                 return new BackupResult()
                 {
                     TokenProvided = isTokenExistent,
