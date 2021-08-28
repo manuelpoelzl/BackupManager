@@ -43,7 +43,7 @@ namespace Rexpavo.BackupManager.Classes.Helpers
 
                     if (inLog)
                     {
-                        Logger.Collect(Logger.eMessageType.INFO, message);
+                        Logger.Collect(Logger.eMessageType.INFO, message,2);
                         Logger.Save();
                     }
 
@@ -58,7 +58,7 @@ namespace Rexpavo.BackupManager.Classes.Helpers
 
                     if (inLog)
                     {
-                        Logger.Collect(Logger.eMessageType.ERROR, message);
+                        Logger.Collect(Logger.eMessageType.ERROR, message,2);
                         Logger.Save();
                     }
 
@@ -73,7 +73,7 @@ namespace Rexpavo.BackupManager.Classes.Helpers
 
                     if (inLog)
                     {
-                        Logger.Collect(Logger.eMessageType.INFO, message);
+                        Logger.Collect(Logger.eMessageType.INFO, message,2);
                         Logger.Save();
                     }
 
@@ -88,7 +88,7 @@ namespace Rexpavo.BackupManager.Classes.Helpers
 
                     if (inLog)
                     {
-                        Logger.Collect(Logger.eMessageType.WARNING, message);
+                        Logger.Collect(Logger.eMessageType.WARNING, message,2);
                         Logger.Save();
                     }
 

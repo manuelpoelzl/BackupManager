@@ -1,10 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 
 namespace Rexpavo.BackupManager.Classes.Models
 {
     internal class Project
     {
+        [JsonPropertyName("Name")]
+        internal  string Name { get; private set; }
+        
         [JsonPropertyName("Branches")]
-        public Branch[] Branches { get; private set; }
+        internal Branch[] Branches { get; private set; }
     }
 }

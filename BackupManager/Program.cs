@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using Octokit;
 using Rexpavo.BackupManager.Classes.Helpers;
+using Rexpavo.BackupManager.Classes.Models;
 using Rexpavo.BackupManager.Classes.VCS;
 using Rexpavo.BackupManager.Utils;
 
@@ -45,9 +48,6 @@ namespace Rexpavo.BackupManager
             #endregion
 
             /*Actual work*/
-            
-            
-            
         }
     }
 }

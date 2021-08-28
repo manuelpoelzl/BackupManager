@@ -51,7 +51,7 @@ namespace Rexpavo.BackupManager.Utils
             string executingMethodName = new StackTrace().GetFrame(skipFrame).GetMethod().Name;
             string logTime = DateTime.Now.ToString("dd-M-yyyy--HH-mm-ss");
 
-            string logMessage = $"{executingMethodName}|{Enum.GetName(type)}|{message}";
+            string logMessage = $"{Enum.GetName(type)}|{executingMethodName}|{message}";
             _builder.AppendLine(logMessage);
         }
 
@@ -64,9 +64,9 @@ namespace Rexpavo.BackupManager.Utils
 
         internal static void Save()
         {
-            string fileCreateTime = DateTime.Now.ToString("dd-M-yyyy--HH");
+            string fileCreateTime = DateTime.Now.ToString("dd-M-yyyy--HH-mm");
 
-            string fullFileName = Path.Combine(_logDirectory, $"Backup Manager Log - {fileCreateTime}");
+            string fullFileName = Path.Combine(_logDirectory, $"Backup Manager Log - {fileCreateTime}.log");
 
 
             if (!File.Exists(fullFileName))
