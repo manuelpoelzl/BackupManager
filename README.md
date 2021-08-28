@@ -5,6 +5,7 @@ The whole thing is designed as a console application to run in a task scheduler 
 ## And how does this thing work?
 All you need to get this thing running are GitHub projects and a JSON file - pretty stripped down stuff!
 
+
 ```json
 {
 	"Environment": {
@@ -42,9 +43,14 @@ The projects are specified as an array of objects, each object represents one pr
 Branches are defined in the same way as projects, as an array of objects, which is located directly as a setting in the project. 
 |Setting|What it does  |
 |--|--|
-|Name|The name of the branch you want to backup  |
+|Name|The name of the branch you want to backup|
+## After you have created the JSON
+After you have created the JSON, you just need to tell the application to use it.
+To do that, you simply specify the config as a parameter:
 
+For example, like this:
 
+*"backupmanager.exe config:<PFAD_ZUR_DATEI>"*
 ## Logging
 Each backup operation is logged and written to a log file under the following folder: *"C:\Users\USER\AppData\Local\Temp\Rexpavo\BackupManager\Logs"*
 
