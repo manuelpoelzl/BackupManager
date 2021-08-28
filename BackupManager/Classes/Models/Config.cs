@@ -6,7 +6,7 @@ namespace Rexpavo.BackupManager.Classes.Models
     internal class Config
     {
         [JsonPropertyName("Projects")] 
-        internal Project[] Projects { get; private set; }
+        public Project[] Projects { get; set; }
         
     }
 }

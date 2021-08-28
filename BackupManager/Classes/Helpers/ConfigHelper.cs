@@ -20,6 +20,8 @@ namespace Rexpavo.BackupManager.Classes.Helpers
 
                 GeneralHelper.Write("Get config file content...", GeneralHelper.eWriteTypes.Info, true);
                 string configFileContent = File.ReadAllText(path);
+                configFileContent.Replace("\n", "").Replace("\r", "");
+
                 GeneralHelper.Write("Config file successfully read", GeneralHelper.eWriteTypes.Info, true);
 
                 GeneralHelper.Write("Begin parsing....", GeneralHelper.eWriteTypes.Info, true);

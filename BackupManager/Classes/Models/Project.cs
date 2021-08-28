@@ -6,9 +6,9 @@ namespace Rexpavo.BackupManager.Classes.Models
     internal class Project
     {
         [JsonPropertyName("Name")]
-        internal  string Name { get; private set; }
+        public  string Name { get;  set; }
         
         [JsonPropertyName("Branches")]
-        internal Branch[] Branches { get; private set; }
+        public Branch[] Branches { get;  set; }
     }
 }
