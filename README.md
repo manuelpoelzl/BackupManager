@@ -1,4 +1,6 @@
 # Rexpavo BackupManager
+![BackupManager at work](https://i.imgur.com/wwAl2CL.png)
+
 ## What exactly is this? 
 This console application allows you to download the latest commits of any branches of your projects.
 The whole thing is designed as a console application to run in a task scheduler (e.g. daily at 01:00 am).
@@ -53,4 +55,5 @@ For example, like this:
 *"backupmanager.exe config:<PFAD_ZUR_DATEI>"*
 ## Logging
 Each backup operation is logged and written to a log file under the following folder: *"C:\Users\USER\AppData\Local\Temp\Rexpavo\BackupManager\Logs"*
+
 
