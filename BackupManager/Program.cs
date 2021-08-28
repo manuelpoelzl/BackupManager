@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Octokit;
 using Rexpavo.BackupManager.Classes.Helpers;
 using Rexpavo.BackupManager.Classes.Models;
-using Rexpavo.BackupManager.Classes.VCS;
+using Rexpavo.BackupManager.Classes.Core;
 using Rexpavo.BackupManager.Utils;
 
 namespace Rexpavo.BackupManager
@@ -33,21 +30,19 @@ namespace Rexpavo.BackupManager
 
             #endregion
 
-            #region --Github Auth--
+            #region --Read config--
 
-            GitHub githubHelper = new GitHub();
+            ConfigHelper configHelper = new ConfigHelper();
 
-            bool userAuthenticated = githubHelper.Authenticate(argHelper.GetArgumentValue("token")).Result;
-
-            if (!userAuthenticated)
-            {
-                Logger.Collect(Logger.eMessageType.ERROR, "User could not be authenticated!");
-                Logger.Save();
-            }
+            Config config = configHelper.Read(argHelper.GetArgumentValue("config"));
 
             #endregion
 
             /*Actual work*/
+
+            Classes.Core.BackupManager backupManager = new Classes.Core.BackupManager(config);
+
+            backupManager.PeformBackup();
         }
     }
 }

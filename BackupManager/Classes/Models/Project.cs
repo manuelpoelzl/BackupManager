@@ -8,6 +8,9 @@ namespace Rexpavo.BackupManager.Classes.Models
         [JsonPropertyName("Name")]
         public  string Name { get;  set; }
         
+        [JsonPropertyName("Organization")]
+        public string Organization { get; set; }
+        
         [JsonPropertyName("Branches")]
         public Branch[] Branches { get;  set; }
     }

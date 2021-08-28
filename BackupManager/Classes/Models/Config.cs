@@ -5,8 +5,10 @@ namespace Rexpavo.BackupManager.Classes.Models
 {
     internal class Config
     {
-        [JsonPropertyName("Projects")] 
+        [JsonPropertyName("Environment")]
+        public BMEnvironment Environment { get; set; }
+
+        [JsonPropertyName("Projects")]
         public Project[] Projects { get; set; }
-        
     }
 }

@@ -4,6 +4,8 @@ namespace Rexpavo.BackupManager.Classes.Models
 {
     internal class Branch
     {
-        [JsonPropertyName("Name")] public string Name { get; set; }
+        [JsonPropertyName("Name")]
+        public string Name { get; set; }
+        
     }
 }
