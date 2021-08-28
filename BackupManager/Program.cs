@@ -42,7 +42,15 @@ namespace Rexpavo.BackupManager
 
             Classes.Core.BackupManager backupManager = new Classes.Core.BackupManager(config);
 
-            backupManager.PeformBackup();
+            BackupResult result = backupManager.PeformBackup();
+
+
+            GeneralHelper.Write($"Total number of items to backup: {result.NumberOfItemsToBackup}",
+                GeneralHelper.eWriteTypes.Info, true);
+            GeneralHelper.Write($"Number of items actually backed up: {result.NumberOfActualItemsBackedUp}",
+                GeneralHelper.eWriteTypes.Info, true);
+            GeneralHelper.Write($"Number of items failed to backup: {result.NumberOfFailedItems}",
+                GeneralHelper.eWriteTypes.Error, true);
         }
     }
 }

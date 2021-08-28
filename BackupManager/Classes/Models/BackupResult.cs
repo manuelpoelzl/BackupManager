@@ -10,8 +10,6 @@ namespace Rexpavo.BackupManager.Classes.Models
         internal int NumberOfItemsToBackup { get; set; }
         internal int NumberOfActualItemsBackedUp { get; set; }
         internal int NumberOfFailedItems { get; set; }
-        internal int NumberOfPartiallyFailedItems { get; set; }
 
-        internal List<Branch> FailedBranches = new List<Branch>();
     }
 }

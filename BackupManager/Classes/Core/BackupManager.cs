@@ -98,42 +98,87 @@ namespace Rexpavo.BackupManager.Classes.Core
             }
         }
 
-        internal void PeformBackup()
+        internal BackupResult PeformBackup()
         {
-            bool[] validationGates = new[]
-                {ValidateSavePathAndCreateIfNotExisting(), ValidateTokenExistence(), ValidateUser()};
-
-            if (validationGates.Any(x => x == false))
-                throw new Exception("Validation not passed - ABORT!");
-
-            GitHub githubHelper = new GitHub();
-            githubHelper.Authenticate(_config.Environment.Token).Wait();
-
-
-            foreach (Project project in _config.Projects)
+            try
             {
-                string savePath = Path.Combine(_config.Environment.SavePath,
-                    DateTime.Now.ToString("dd.MM.yyyy"), project.Name);
+                int failedBackups = 0;
+                int backedUp = 0;
+                int totalNrToBackup = 0;
+
+                bool isUserValidated, isSavePathValidated, isTokenExistent;
+
+                bool[] validationGates = new[]
+                    {ValidateSavePathAndCreateIfNotExisting(), ValidateTokenExistence(), ValidateUser()};
+
+                isSavePathValidated = validationGates[0];
+                isTokenExistent = validationGates[1];
+                isUserValidated = validationGates[2];
 
 
-                if (!string.IsNullOrWhiteSpace(project.Organization))
-                    githubHelper.ActAsOrganization(project.Organization).Wait();
+                if (validationGates.Any(x => x == false))
+                    throw new Exception("Validation not passed - ABORT!");
+
+                GitHub githubHelper = new GitHub();
+                githubHelper.Authenticate(_config.Environment.Token).Wait();
 
 
-                foreach (Branch branch in project.Branches)
+                foreach (Project project in _config.Projects)
                 {
-                    Octokit.Branch requestedBranch = githubHelper.GetBranch(project.Name, branch.Name).Result;
+                    string savePath = Path.Combine(_config.Environment.SavePath,
+                        DateTime.Now.ToString("dd.MM.yyyy"), project.Name);
 
-                    string lastestSHA = requestedBranch.Commit.Sha;
 
-                    ValidateSavePathAndCreateIfNotExisting(savePath);
+                    if (!string.IsNullOrWhiteSpace(project.Organization))
+                        githubHelper.ActAsOrganization(project.Organization).Wait();
 
-                    githubHelper.DownloadArchive(project.Name, branch.Name, lastestSHA, _config.Environment.Token,
-                        savePath);
+
+                    foreach (Branch branch in project.Branches)
+                    {
+                        try
+                        {
+                            totalNrToBackup++;
+
+                            Octokit.Branch requestedBranch = githubHelper.GetBranch(project.Name, branch.Name).Result;
+
+                            string lastestSHA = requestedBranch.Commit.Sha;
+
+                            ValidateSavePathAndCreateIfNotExisting(savePath);
+
+                            githubHelper.DownloadArchive(project.Name, branch.Name, lastestSHA,
+                                _config.Environment.Token,
+                                savePath);
+
+                            backedUp++;
+                        }
+                        catch (Exception e)
+                        {
+                            failedBackups++;
+                        }
+                    }
+
+                    if (githubHelper.ActsAsOrganization)
+                        githubHelper.StopOrganizationActing();
                 }
 
-                if (githubHelper.ActsAsOrganization)
-                    githubHelper.StopOrganizationActing();
+                return new BackupResult()
+                {
+                    TokenProvided = isTokenExistent,
+                    IsUserValidated = isUserValidated,
+                    SavePathValid = isSavePathValidated,
+                    NumberOfFailedItems = failedBackups,
+                    NumberOfItemsToBackup = totalNrToBackup,
+                    NumberOfActualItemsBackedUp = backedUp
+                };
+            }
+            catch (Exception e)
+            {
+                Logger.Collect(e);
+                throw;
+            }
+            finally
+            {
+                Logger.Save();
             }
         }
 

@@ -64,7 +64,7 @@ namespace Rexpavo.BackupManager.Utils
 
         internal static void Save()
         {
-            string fileCreateTime = DateTime.Now.ToString("dd-M-yyyy--HH-mm");
+            string fileCreateTime = DateTime.Now.ToString("dd-M-yyyy");
 
             string fullFileName = Path.Combine(_logDirectory, $"Backup Manager Log - {fileCreateTime}.log");
 
