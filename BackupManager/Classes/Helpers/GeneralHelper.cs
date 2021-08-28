@@ -1,6 +1,7 @@
 ﻿using System;
+using Rexpavo.BackupManager.Utils;
 
-namespace Rexpavo.BackupManager.Classes
+namespace Rexpavo.BackupManager.Classes.Helpers
 {
     internal static class GeneralHelper
     {
@@ -28,7 +29,8 @@ namespace Rexpavo.BackupManager.Classes
             return new[] {part1, part2};
         }
 
-        internal static void Write(string message, eWriteTypes type)
+
+        internal static void Write(string message, eWriteTypes type, bool inLog = false)
         {
             switch (type)
             {
@@ -38,29 +40,57 @@ namespace Rexpavo.BackupManager.Classes
                     Console.WriteLine(message);
                     Console.ResetColor();
 
+
+                    if (inLog)
+                    {
+                        Logger.Collect(Logger.eMessageType.INFO, message);
+                        Logger.Save();
+                    }
+
                     break;
                 }
                 case eWriteTypes.Error:
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write(message);
+                    Console.Write($"[ERROR] {message}");
                     Console.ResetColor();
+
+
+                    if (inLog)
+                    {
+                        Logger.Collect(Logger.eMessageType.ERROR, message);
+                        Logger.Save();
+                    }
 
                     break;
                 }
                 case eWriteTypes.Info:
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine(message);
+                    Console.WriteLine($"[INFO] {message}");
                     Console.ResetColor();
+
+
+                    if (inLog)
+                    {
+                        Logger.Collect(Logger.eMessageType.INFO, message);
+                        Logger.Save();
+                    }
 
                     break;
                 }
                 case eWriteTypes.Warning:
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(message);
+                    Console.WriteLine($"[WARNING] {message}");
                     Console.ResetColor();
+
+
+                    if (inLog)
+                    {
+                        Logger.Collect(Logger.eMessageType.WARNING, message);
+                        Logger.Save();
+                    }
 
                     break;
                 }

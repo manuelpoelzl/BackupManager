@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Rexpavo.BackupManager.Classes
+namespace Rexpavo.BackupManager.Classes.Helpers
 {
     internal class ArgumentHelper
     {

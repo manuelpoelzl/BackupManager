@@ -52,7 +52,6 @@ namespace Rexpavo.BackupManager.Utils
             string logTime = DateTime.Now.ToString("dd-M-yyyy--HH-mm-ss");
 
             string logMessage = $"{executingMethodName}|{Enum.GetName(type)}|{message}";
-
             _builder.AppendLine(logMessage);
         }
 
