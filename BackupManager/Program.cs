@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BackupManager
+namespace Rexpavo.BackupManager
 {
     class Program
     {
