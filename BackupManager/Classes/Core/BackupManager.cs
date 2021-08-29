@@ -170,7 +170,15 @@ namespace Rexpavo.BackupManager.Classes.Core
                         }
                         catch (Exception e)
                         {
+                            Logger.Collect(e);
+
                             failedBackups++;
+
+                            throw;
+                        }
+                        finally
+                        {
+                            Logger.Save();
                         }
                     }
 

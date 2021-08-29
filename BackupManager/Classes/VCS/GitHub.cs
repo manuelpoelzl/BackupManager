@@ -337,6 +337,8 @@ namespace Rexpavo.BackupManager.Classes.VCS
 
                 string fileLocation = Path.Combine(savePath, $"{branchName}.zip");
 
+                GeneralHelper.Write($"Writing file to {fileLocation}",GeneralHelper.eWriteTypes.Info);
+                
                 using (WebClient wc = new WebClient())
                 {
                     GeneralHelper.Write("Preparing webclient...", GeneralHelper.eWriteTypes.Info, true);
@@ -353,6 +355,7 @@ namespace Rexpavo.BackupManager.Classes.VCS
             }
             catch (Exception e)
             {
+                GeneralHelper.Write(e.Message, GeneralHelper.eWriteTypes.Error, true);
                 Logger.Collect(e);
                 throw;
             }
