@@ -16,7 +16,7 @@ All you need to get this thing running are GitHub projects and a JSON file - pre
 	},
 	"Projects": [{
 			"Name": "<NAME>",
-			"Organization": "<ORG>",
+			"Organization": "<ORG NAME>",
 			"Branches": [{
 				"Name": "<NAME>"
 			}]
