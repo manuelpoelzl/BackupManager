@@ -1,4 +1,5 @@
-# Rexpavo BackupManager
+# BackupManager
+
 ![BackupManager at work](https://i.imgur.com/wwAl2CL.png)
 
 ## What exactly is this? 
