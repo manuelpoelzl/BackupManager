@@ -53,7 +53,7 @@ To do that, you simply specify the config as a parameter:
 
 For example, like this:
 
-*"backupmanager.exe config:<PFAD_ZUR_DATEI>"*
+*"backupmanager.exe config:<PATH_TO_CONFIG_FILE>"*
 ## Logging
 Each backup operation is logged and written to a log file under the following folder: *"C:\Users\USER\AppData\Local\Temp\Rexpavo\BackupManager\Logs"*
 
